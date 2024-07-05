@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-frontend
+  namespace: kairos
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: react-frontend
+  template:
+    metadata:
+      labels:
+        app: react-frontend
+    spec:
+      containers:
+      - name: react-frontend
+        image: nginx:latest
+        ports:
+        - containerPort: 80

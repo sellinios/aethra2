@@ -1,0 +1,1 @@
+kubectl logs -f -l app=react-frontend -n kairos
