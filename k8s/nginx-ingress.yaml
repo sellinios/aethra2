@@ -4,8 +4,7 @@ metadata:
   name: ingress
   namespace: kairos
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
@@ -13,6 +12,13 @@ spec:
   - host: kairos.gr
     http:
       paths:
+      - path: /.well-known/acme-challenge
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cm-acme-http-solver-frhrs
+            port:
+              number: 8089
       - path: /
         pathType: Prefix
         backend:
