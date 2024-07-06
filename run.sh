@@ -2,7 +2,7 @@
 
 echo "Select the script you want to run:"
 echo "1) Docker Cleanup"
-echo "2) Another script (add more options as needed)"
+echo "2) Deploy microk8s"
 
 read -p "Enter the number of the script you want to run: " choice
 
@@ -12,8 +12,8 @@ case $choice in
     ./system/docker_cleanup.sh
     ;;
   2)
-    # Add the command for another script here
-    echo "Another script option selected"
+    echo "Deploy..."
+    ./system/deploy.sh
     ;;
   *)
     echo "Invalid choice"

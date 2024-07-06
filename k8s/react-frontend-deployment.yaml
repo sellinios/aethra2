@@ -4,7 +4,7 @@ metadata:
   name: react-frontend
   namespace: kairos
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: react-frontend
@@ -15,8 +15,6 @@ spec:
     spec:
       containers:
       - name: react-frontend
-        image: sellinios/react-app:latest
+        image: sellinios/react-frontend:latest
         ports:
-        - containerPort: 3000
-      imagePullSecrets:
-      - name: my-registry-key
+        - containerPort: 80

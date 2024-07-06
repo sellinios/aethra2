@@ -10,4 +10,4 @@ spec:
     kind: ClusterIssuer
   commonName: kairos.gr
   dnsNames:
-  - kairos.gr
+    - kairos.gr
