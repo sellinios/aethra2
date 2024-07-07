@@ -1,5 +1,0 @@
-# Create kairos namespace (if not already created)
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kairos

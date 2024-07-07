@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: react-frontend
-  namespace: kairos
+  namespace: frontend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: react-frontend
@@ -15,6 +15,13 @@ spec:
     spec:
       containers:
       - name: react-frontend
-        image: sellinios/react-frontend:latest
+        image: your-dockerhub-username/react-app:latest
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
