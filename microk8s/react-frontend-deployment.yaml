@@ -18,6 +18,7 @@ spec:
         image: sellinios/react-app:latest
         ports:
         - containerPort: 80
+        - containerPort: 443
         resources:
           requests:
             memory: "256Mi"
@@ -27,3 +28,7 @@ spec:
             cpu: "500m"
       imagePullSecrets:
       - name: regcred
+      volumes:
+      - name: tls-secret
+        secret:
+          secretName: tls-secret

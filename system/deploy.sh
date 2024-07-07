@@ -13,12 +13,7 @@ log() {
 
 # Step 1: Enable necessary MicroK8s addons
 log "Enabling necessary MicroK8s addons..."
-microk8s enable dns
-microk8s enable dashboard
-microk8s enable storage
-microk8s enable ingress
-microk8s enable cert-manager
-microk8s enable metrics-server
+microk8s enable dns dashboard storage ingress cert-manager metrics-server
 
 # Step 2: Docker login
 log "Logging into Docker..."
@@ -51,6 +46,7 @@ apply_config() {
 log "Applying Kubernetes configurations..."
 apply_config "../microk8s/namespace-frontend.yaml"
 apply_config "../microk8s/cluster-issuer.yaml"
+apply_config "../microk8s/certificate.yaml"
 
 # Ensure metallb-system namespace exists
 log "Ensuring metallb-system namespace exists..."
@@ -61,6 +57,7 @@ apply_config "../microk8s/metallb-config.yaml"
 apply_config "../microk8s/react-frontend-deployment.yaml"
 apply_config "../microk8s/react-frontend-service.yaml"
 apply_config "../microk8s/nginx-ingress-service.yaml"
+apply_config "../microk8s/react-ingress.yaml"
 
 # Step 6: Ensure MetalLB is configured for LoadBalancer service
 log "Ensuring MetalLB is configured for LoadBalancer service..."
@@ -78,41 +75,6 @@ sudo microk8s kubectl create secret docker-registry regcred \
   --docker-password=$DOCKER_PASSWORD \
   --docker-email=lefteris.broker@gmail.com \
   -n $NAMESPACE --dry-run=client -o yaml | sudo microk8s kubectl apply -f -
-
-# Step 9: Apply the correct Ingress configuration with SSL
-log "Applying Ingress resource with SSL configuration..."
-cat <<EOF | microk8s kubectl apply -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: react-ingress
-  namespace: frontend
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
-    nginx.ingress.kubernetes.io/http2-push-preload: "true"
-    nginx.ingress.kubernetes.io/quic-redirect: "true"
-spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - kairos.gr
-    secretName: tls-secret  # The secret that stores the certificate
-  rules:
-  - host: kairos.gr
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: react-frontend-service
-            port:
-              number: 80
-EOF
 
 # Verify deployment
 log "Verifying deployment..."
