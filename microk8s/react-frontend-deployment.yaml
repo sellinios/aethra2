@@ -19,6 +19,10 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
+        volumeMounts:
+        - name: tls-secret
+          mountPath: /etc/nginx/certs
+          readOnly: true
         resources:
           requests:
             memory: "256Mi"
@@ -31,4 +35,4 @@ spec:
       volumes:
       - name: tls-secret
         secret:
-          secretName: tls-secret
+          secretName: react-frontend-tls

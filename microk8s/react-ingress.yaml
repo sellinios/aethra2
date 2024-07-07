@@ -16,11 +16,18 @@ spec:
   tls:
   - hosts:
     - kairos.gr
-    secretName: tls-secret
+    secretName: react-frontend-tls
   rules:
   - host: kairos.gr
     http:
       paths:
+      - path: /.well-known/acme-challenge/
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: react-frontend-service
+            port:
+              number: 80
       - path: /
         pathType: Prefix
         backend:

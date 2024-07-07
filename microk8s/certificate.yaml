@@ -1,13 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: tls-secret
+  name: react-frontend-tls
   namespace: frontend
 spec:
-  secretName: tls-secret
+  secretName: react-frontend-tls
+  dnsNames:
+  - kairos.gr
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: kairos.gr
-  dnsNames:
-  - kairos.gr

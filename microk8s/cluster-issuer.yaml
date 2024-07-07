@@ -4,8 +4,8 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: lefteris.broker@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
+    email: lefteris.broker@gmail.com
     privateKeySecretRef:
       name: letsencrypt-prod
     solvers:
