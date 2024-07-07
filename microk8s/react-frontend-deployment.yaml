@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
       - name: react-frontend
-        image: your-dockerhub-username/react-app:latest
+        image: sellinios/react-app:latest
         ports:
         - containerPort: 80
+        - containerPort: 443
         resources:
           requests:
             memory: "256Mi"
@@ -25,3 +26,9 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: tls-secret
+        secret:
+          secretName: tls-secret
