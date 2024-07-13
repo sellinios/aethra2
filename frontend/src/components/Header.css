@@ -1,0 +1,27 @@
+/* src/components/Header.css */
+.header {
+    background-color: #343a40;
+    padding: 0.5rem 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+.navbar-brand:hover {
+    color: #ffffff;
+}
+
+.nav-link {
+    color: #ffffff !important;
+}
+
+.nav-link:hover {
+    color: #d4d4d4 !important;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}

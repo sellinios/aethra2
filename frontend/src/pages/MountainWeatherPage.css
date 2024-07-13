@@ -1,0 +1,13 @@
+/* MountainDailyPanel.css */
+.mountain-daily-panel .forecast-details {
+  background-color: #e0f7fa;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.mountain-daily-panel .alert-zone {
+  font-weight: bold;
+}
+
+/* Add other custom styles as needed */

@@ -1,0 +1,9 @@
+/* src/components/LocationFinder.css */
+
+.alert {
+  margin-top: 20px;
+}
+
+.alert a {
+  font-weight: bold;
+}

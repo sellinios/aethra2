@@ -1,0 +1,32 @@
+.region {
+    margin-bottom: 2rem;
+}
+
+.region-title {
+    margin-top: 2rem;
+    font-size: 1.75rem;
+    color: #333;
+    border-bottom: 2px solid #f0ad4e; /* Add a bottom border */
+    padding-bottom: 0.5rem;
+}
+
+.municipalities-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 0.5rem; /* Adjusted gap for cleaner look */
+}
+
+.municipality {
+    padding: 0.5rem; /* Adjusted padding for smaller text */
+    text-align: left; /* Align text to the left */
+    height: auto; /* Adjusted height for content */
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.municipality h5 {
+    font-size: 0.875rem; /* Smaller font size */
+    margin: 0;
+    color: #333; /* Ensures text color matches the rest of the content */
+}

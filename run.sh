@@ -1,21 +1,16 @@
 #!/bin/bash
 
-echo "Select the script you want to run:"
-echo "1) Docker Cleanup"
-echo "2) Deploy microk8s"
+# Pull the latest code from the repository
+cd /home/sellinios/aethra || { echo "Directory /home/sellinios/aethra not found. Exiting."; exit 1; }
 
-read -p "Enter the number of the script you want to run: " choice
+# Check the branch name
+BRANCH_NAME="master" # Updated to use "master" branch
 
-case $choice in
-  1)
-    echo "Running Docker Cleanup..."
-    ./system/docker_cleanup.sh
-    ;;
-  2)
-    echo "Deploy..."
-    ./system/deploy.sh
-    ;;
-  *)
-    echo "Invalid choice"
-    ;;
-esac
+# Pull the latest code
+git pull origin $BRANCH_NAME
+
+# Run the build script
+/home/sellinios/aethra/system/build.sh
+
+# Run the deploy script
+/home/sellinios/aethra/system/deploy.sh

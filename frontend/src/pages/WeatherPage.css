@@ -1,0 +1,37 @@
+/* src/components/Weather/WeatherPage.css */
+.container {
+  font-family: Arial, sans-serif;
+  margin-top: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.alert {
+  margin-top: 20px;
+}
+
+.daily-panel {
+  margin-top: 20px;
+}
+
+.date {
+  font-size: 1.0em;
+  margin-bottom: 10px;
+}
+
+.temperature,
+.wind-speed,
+.precipitation,
+.cloud-cover {
+  margin: 0 10px;
+}
+
+.text-danger {
+  color: red !important;
+}

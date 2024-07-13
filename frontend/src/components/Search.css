@@ -1,0 +1,24 @@
+/* src/components/Search.css */
+
+.search-container {
+    margin-top: 20px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 300px; /* Adjust the max-width for smaller size */
+    margin-right: 10px;
+    padding: 5px 10px; /* Reduced padding */
+    font-size: 14px; /* Smaller font size */
+}
+
+.search-button {
+    padding: 5px 15px; /* Reduced padding */
+    font-size: 14px; /* Smaller font size */
+}

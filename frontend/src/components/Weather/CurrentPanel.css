@@ -1,0 +1,58 @@
+.current-panel {
+  background: linear-gradient(to bottom, #1b547e, #1d3a5f); /* Gradient background */
+  color: white; /* White text color */
+  border: none; /* Remove card border */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 20px; /* Add padding */
+  text-align: center; /* Center text alignment */
+  font-family: 'Arial', sans-serif; /* Modern font */
+}
+
+.current-panel-header {
+  background: none; /* No background for the header */
+  border-bottom: none; /* Remove header border */
+  color: white; /* White text color */
+  font-size: 1.5rem; /* Increase font size */
+  padding: 10px 20px; /* Add padding */
+  border-top-left-radius: 10px; /* Rounded corners */
+  border-top-right-radius: 10px; /* Rounded corners */
+}
+
+.current-panel-title {
+  font-size: 3rem; /* Larger font size for the temperature */
+  font-weight: bold; /* Bold font weight */
+  margin-bottom: 10px; /* Add margin below */
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* More prominent text shadow */
+}
+
+.vertical-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Add gap between elements */
+}
+
+.horizontal-layout {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: space-around; /* Spread out the forecast items */
+  align-items: center;
+  padding: 10px; /* Add padding */
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.hourly-forecast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px; /* Add margin between items */
+  color: white; /* Ensure text color is white */
+  flex: 1 1 60px; /* Flex-grow, flex-shrink, and flex-basis for responsiveness */
+}
+
+.weather-icon {
+  margin-bottom: 5px; /* Adjust margin below the icon */
+  /* Remove fill property to avoid conflicts */
+}

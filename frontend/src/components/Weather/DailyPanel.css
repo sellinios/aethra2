@@ -1,0 +1,80 @@
+/* src/components/Weather/DailyPanel.css */
+.daily-panel {
+  margin-top: 20px;
+}
+
+.date {
+  font-size: 1.0em;
+  margin-bottom: 10px;
+}
+
+.temperature,
+.wind-direction,
+.precipitation,
+.cloud-cover {
+  margin: 0 10px;
+}
+
+.text-danger {
+  color: red !important;
+}
+
+.alert-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  font-weight: bold;
+  width: 100%;
+}
+
+.alert-heat {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.alert-heatwave {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-no-alert {
+  color: #3c82b1;
+  background-color: #fefffe;
+  border-color: #82ae82;
+}
+
+.alert-zone svg {
+  margin-right: 0.5em;
+}
+
+.expanded-section {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background-color: #97bbe3;
+  border-color: #d4e4f6;
+}
+
+.btn-sm {
+  padding: 0.25em 0.5em;
+  font-size: 0.875em;
+  line-height: 1.5;
+  border-radius: 0.2em;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.w-100 {
+  width: 100%;
+}
