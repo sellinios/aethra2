@@ -21,7 +21,7 @@ async function fetchWeatherPlaces(page = 1, pageSize = 100) {
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching weather places:', error);
+    console.error('Error fetching weather places:', error.response ? error.response.status : error.message);
     return { results: [], next: null };
   }
 }

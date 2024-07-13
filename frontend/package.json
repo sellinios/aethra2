@@ -5,7 +5,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "postbuild": "node generate-sitemap.js && cp /home/sellinios/aethra/ads/ads.txt build/ && mkdir -p build/static && cp ./node_modules/leaflet/dist/leaflet.css ./build/static/ && cp ./node_modules/leaflet/dist/leaflet.js ./build/static/",
+    "postbuild": "node generate-sitemap.js && cp ./ads.txt build/ && mkdir -p build/static && cp ./node_modules/leaflet/dist/leaflet.css ./build/static/ && cp ./node_modules/leaflet/dist/leaflet.js ./build/static/",
     "test": "craco test"
   },
   "license": "MIT",
