@@ -44,6 +44,13 @@ done
 wait_for_pods $NAMESPACE
 wait_for_pods $INGRESS_NAMESPACE
 
+# Get the new image name
+NEW_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/deployment.yaml | awk '{print $2}')
+
+# Force update the deployment to use the latest image
+log "Updating deployment with the new image: $NEW_IMAGE"
+microk8s kubectl set image deployment/react-frontend react-frontend=$NEW_IMAGE -n $NAMESPACE
+
 # Verify deployment
 log "Verifying deployment..."
 microk8s kubectl get pods -n $NAMESPACE
