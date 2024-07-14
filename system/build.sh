@@ -14,10 +14,15 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Variables
-IMAGE_NAME=$DOCKER_HUB_USERNAME/frontend
-TAG=$(date +%Y%m%d%H%M%S)
-FULL_IMAGE_NAME=$IMAGE_NAME:$TAG
+# Variables for frontend
+FRONTEND_IMAGE_NAME=$DOCKER_HUB_USERNAME/frontend
+FRONTEND_TAG=$(date +%Y%m%d%H%M%S)
+FRONTEND_FULL_IMAGE_NAME=$FRONTEND_IMAGE_NAME:$FRONTEND_TAG
+
+# Variables for backend
+BACKEND_IMAGE_NAME=$DOCKER_HUB_USERNAME/backend
+BACKEND_TAG=$(date +%Y%m%d%H%M%S)
+BACKEND_FULL_IMAGE_NAME=$BACKEND_IMAGE_NAME:$BACKEND_TAG
 
 # Navigate to the aethra directory
 cd /home/sellinios/aethra || { echo "Directory /home/sellinios/aethra not found. Exiting."; exit 1; }
@@ -27,28 +32,43 @@ if [ ! -f frontend/ads.txt ]; then
   cp ads/ads.txt frontend/
 fi
 
-# Navigate to the frontend directory
+# Build the frontend Docker image
 cd frontend || { echo "Directory /home/sellinios/aethra/frontend not found. Exiting."; exit 1; }
-
-# Build the Docker image
-sudo docker build -t $FULL_IMAGE_NAME .
+sudo docker build -t $FRONTEND_FULL_IMAGE_NAME .
 if [ $? -ne 0 ]; then
-  echo "Docker build failed. Exiting."
+  echo "Docker build for frontend failed. Exiting."
   exit 1
 fi
 
-# Push the Docker image to Docker Hub
-sudo docker push $FULL_IMAGE_NAME
+# Push the frontend Docker image to Docker Hub
+sudo docker push $FRONTEND_FULL_IMAGE_NAME
 if [ $? -ne 0 ]; then
-  echo "Docker push failed. Exiting."
+  echo "Docker push for frontend failed. Exiting."
   exit 1
 fi
 
-# Update deployment.yaml with the new image tag
-sed -i "s|image: $IMAGE_NAME:.*|image: $FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/deployment.yaml
+# Build the backend Docker image
+cd ../backend || { echo "Directory /home/sellinios/aethra/backend not found. Exiting."; exit 1; }
+sudo docker build -t $BACKEND_FULL_IMAGE_NAME .
+if [ $? -ne 0 ]; then
+  echo "Docker build for backend failed. Exiting."
+  exit 1
+fi
+
+# Push the backend Docker image to Docker Hub
+sudo docker push $BACKEND_FULL_IMAGE_NAME
+if [ $? -ne 0 ]; then
+  echo "Docker push for backend failed. Exiting."
+  exit 1
+fi
+
+# Update deployment.yaml with the new image tags for frontend and backend
+sed -i "s|image: $FRONTEND_IMAGE_NAME:.*|image: $FRONTEND_FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/deployment.yaml
+sed -i "s|image: $BACKEND_IMAGE_NAME:.*|image: $BACKEND_FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/backend-deployment.yaml
+
 if [ $? -ne 0 ]; then
   echo "Failed to update deployment.yaml. Exiting."
   exit 1
 fi
 
-echo "Docker image pushed and deployment.yaml updated."
+echo "Docker images pushed and deployment.yaml updated."

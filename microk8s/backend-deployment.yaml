@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      initContainers:
+        - name: migrate
+          image: sellinios/backend:latest
+          command: ["python"]
+          args: ["manage.py", "migrate"]
+          env:
+            - name: POSTGRES_DB
+              value: aethradb
+            - name: POSTGRES_USER
+              value: sellinios
+            - name: POSTGRES_PASSWORD
+              value: faidra123!@#
+            - name: POSTGRES_HOST
+              value: postgres
+      containers:
+        - name: backend
+          image: sellinios/backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_DB
+              value: aethradb
+            - name: POSTGRES_USER
+              value: sellinios
+            - name: POSTGRES_PASSWORD
+              value: faidra123!@#
+            - name: POSTGRES_HOST
+              value: postgres

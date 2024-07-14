@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Set variables
-NAMESPACE="frontend"
+FRONTEND_NAMESPACE="frontend"
+BACKEND_NAMESPACE="backend"
 INGRESS_NAMESPACE="ingress"
 
 # Function to log messages with timestamps
@@ -32,35 +33,54 @@ wait_for_pods() {
   done
 }
 
-# Apply Kubernetes configurations
-log "Applying Kubernetes configurations..."
-configs=("namespace.yaml" "cluster-issuer.yaml" "certificate.yaml" "metallb-config.yaml" "deployment.yaml" "service.yaml" "ingress.yaml" "nginx-ingress-service.yaml")
+# Apply Kubernetes configurations for frontend
+log "Applying Kubernetes configurations for frontend..."
+frontend_configs=("namespace.yaml" "cluster-issuer.yaml" "certificate.yaml" "metallb-config.yaml" "deployment.yaml" "service.yaml" "ingress.yaml" "nginx-ingress-service.yaml")
 
-for config in "${configs[@]}"; do
+for config in "${frontend_configs[@]}"; do
+  apply_config "/home/sellinios/aethra/microk8s/$config"
+done
+
+# Apply Kubernetes configurations for backend
+log "Applying Kubernetes configurations for backend..."
+backend_configs=("backend-deployment.yaml" "backend-service.yaml")
+
+for config in "${backend_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
 done
 
 # Wait for all pods to be running
-wait_for_pods $NAMESPACE
+wait_for_pods $FRONTEND_NAMESPACE
+wait_for_pods $BACKEND_NAMESPACE
 wait_for_pods $INGRESS_NAMESPACE
 
-# Get the new image name
-NEW_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/deployment.yaml | awk '{print $2}')
+# Get the new image names
+FRONTEND_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/deployment.yaml | awk '{print $2}')
+BACKEND_IMAGE=$(grep 'image: sellinios/backend:' /home/sellinios/aethra/microk8s/backend-deployment.yaml | awk '{print $2}')
 
-# Force update the deployment to use the latest image
-log "Updating deployment with the new image: $NEW_IMAGE"
-microk8s kubectl set image deployment/react-frontend react-frontend=$NEW_IMAGE -n $NAMESPACE
+# Force update the deployments to use the latest images
+log "Updating frontend deployment with the new image: $FRONTEND_IMAGE"
+microk8s kubectl set image deployment/react-frontend react-frontend=$FRONTEND_IMAGE -n $FRONTEND_NAMESPACE
+
+log "Updating backend deployment with the new image: $BACKEND_IMAGE"
+microk8s kubectl set image deployment/backend backend=$BACKEND_IMAGE -n $BACKEND_NAMESPACE
 
 # Verify deployment
-log "Verifying deployment..."
-microk8s kubectl get pods -n $NAMESPACE
-microk8s kubectl get svc -n $NAMESPACE
-microk8s kubectl get ingress -n $NAMESPACE
+log "Verifying frontend deployment..."
+microk8s kubectl get pods -n $FRONTEND_NAMESPACE
+microk8s kubectl get svc -n $FRONTEND_NAMESPACE
+microk8s kubectl get ingress -n $FRONTEND_NAMESPACE
+
+log "Verifying backend deployment..."
+microk8s kubectl get pods -n $BACKEND_NAMESPACE
+microk8s kubectl get svc -n $BACKEND_NAMESPACE
+
+log "Verifying nginx ingress service deployment..."
 microk8s kubectl get svc -n $INGRESS_NAMESPACE
 
 # Verify Ingress IP and status
 log "Checking Ingress status..."
-INGRESS_IP=$(microk8s kubectl get ingress frontend-ingress -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+INGRESS_IP=$(microk8s kubectl get ingress frontend-ingress -n $FRONTEND_NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 if [ -z "$INGRESS_IP" ]; then
   log "Error: Ingress does not have an external IP."
   exit 1
