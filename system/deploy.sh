@@ -45,9 +45,16 @@ wait_for_pods() {
   done
 }
 
+# Create Docker registry secret
+microk8s kubectl create secret docker-registry dockerhub-secret \
+    --docker-username=sellinios \
+    --docker-password=faidra123!@# \
+    --docker-email=lefteris.broker@gmail.com \
+    --namespace frontend --dry-run=client -o yaml | microk8s kubectl apply -f -
+
 # Apply Kubernetes configurations for frontend
 log "Applying Kubernetes configurations for frontend..."
-frontend_configs=("frontend-namespace.yaml" "cluster-issuer.yaml" "tls-certificate.yaml" "metallb-config.yaml" "frontend-deployment.yaml" "frontend-service.yaml" "frontend-ingress.yaml")
+frontend_configs=("frontend-namespace.yaml" "frontend-deployment.yaml" "frontend-service.yaml" "frontend-ingress.yaml")
 
 for config in "${frontend_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
@@ -55,7 +62,7 @@ done
 
 # Apply Kubernetes configurations for backend
 log "Applying Kubernetes configurations for backend..."
-backend_configs=("backend-namespace.yaml" "backend-deployment.yaml" "backend-service.yaml" "database-secret.yaml" "postgres-deployment.yaml")
+backend_configs=("backend-namespace.yaml" "backend-deployment.yaml" "backend-service.yaml" "postgres-deployment.yaml")
 
 for config in "${backend_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
@@ -63,7 +70,7 @@ done
 
 # Apply Kubernetes configurations for ingress
 log "Applying Kubernetes configurations for ingress..."
-ingress_configs=("nginx-ingress-service.yaml")
+ingress_configs=("nginx-ingress-service.yaml" "cluster-issuer.yaml" "tls-certificate.yaml")
 
 for config in "${ingress_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
@@ -73,17 +80,6 @@ done
 wait_for_pods $FRONTEND_NAMESPACE 300
 wait_for_pods $BACKEND_NAMESPACE 300
 wait_for_pods $INGRESS_NAMESPACE 300
-
-# Get the new image names
-FRONTEND_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/frontend-deployment.yaml | awk '{print $2}')
-BACKEND_IMAGE=$(grep 'image: sellinios/backend:' /home/sellinios/aethra/microk8s/backend-deployment.yaml | awk '{print $2}')
-
-# Force update the deployments to use the latest images
-log "Updating frontend deployment with the new image: $FRONTEND_IMAGE"
-microk8s kubectl set image deployment/react-frontend react-frontend=$FRONTEND_IMAGE -n $FRONTEND_NAMESPACE
-
-log "Updating backend deployment with the new image: $BACKEND_IMAGE"
-microk8s kubectl set image deployment/backend backend=$BACKEND_IMAGE -n $BACKEND_NAMESPACE
 
 # Verify deployment
 log "Verifying frontend deployment..."

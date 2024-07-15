@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: sellinios/backend:20240715082915
+          image: sellinios/backend:20240715092854
           command: ["python"]
           args: ["manage.py", "migrate"]
           env:
@@ -29,7 +29,7 @@ spec:
               value: postgres
       containers:
         - name: backend
-          image: sellinios/backend:20240715082915
+          image: sellinios/backend:20240715092854
           ports:
             - containerPort: 8000
           env:
@@ -41,3 +41,5 @@ spec:
               value: faidra123!@#
             - name: POSTGRES_HOST
               value: postgres
+      imagePullSecrets:
+        - name: dockerhub-secret
