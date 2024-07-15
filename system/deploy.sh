@@ -20,22 +20,34 @@ apply_config() {
   fi
 }
 
-# Function to wait for pods to be in a Running state
+# Function to wait for pods to be in a Running state with a timeout
 wait_for_pods() {
   local namespace=$1
+  local timeout=$2
+  local interval=5
+  local waited=0
+
   while true; do
     local pending=$(microk8s kubectl get pods -n $namespace --field-selector=status.phase!=Running | wc -l)
     if [ $pending -le 1 ]; then
       break
     fi
+
+    if [ $waited -ge $timeout ]; then
+      log "Timeout waiting for pods to be in Running state in namespace $namespace."
+      microk8s kubectl get pods -n $namespace
+      exit 1
+    fi
+
     log "Waiting for all pods to be in Running state in namespace $namespace..."
-    sleep 5
+    sleep $interval
+    waited=$((waited + interval))
   done
 }
 
 # Apply Kubernetes configurations for frontend
 log "Applying Kubernetes configurations for frontend..."
-frontend_configs=("namespace.yaml" "cluster-issuer.yaml" "certificate.yaml" "metallb-config.yaml" "deployment.yaml" "service.yaml" "ingress.yaml" "nginx-ingress-service.yaml")
+frontend_configs=("frontend-namespace.yaml" "cluster-issuer.yaml" "tls-certificate.yaml" "metallb-config.yaml" "frontend-deployment.yaml" "frontend-service.yaml" "frontend-ingress.yaml")
 
 for config in "${frontend_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
@@ -43,19 +55,27 @@ done
 
 # Apply Kubernetes configurations for backend
 log "Applying Kubernetes configurations for backend..."
-backend_configs=("backend-deployment.yaml" "backend-service.yaml")
+backend_configs=("backend-namespace.yaml" "backend-deployment.yaml" "backend-service.yaml" "database-secret.yaml" "postgres-deployment.yaml")
 
 for config in "${backend_configs[@]}"; do
   apply_config "/home/sellinios/aethra/microk8s/$config"
 done
 
+# Apply Kubernetes configurations for ingress
+log "Applying Kubernetes configurations for ingress..."
+ingress_configs=("nginx-ingress-service.yaml")
+
+for config in "${ingress_configs[@]}"; do
+  apply_config "/home/sellinios/aethra/microk8s/$config"
+done
+
 # Wait for all pods to be running
-wait_for_pods $FRONTEND_NAMESPACE
-wait_for_pods $BACKEND_NAMESPACE
-wait_for_pods $INGRESS_NAMESPACE
+wait_for_pods $FRONTEND_NAMESPACE 300
+wait_for_pods $BACKEND_NAMESPACE 300
+wait_for_pods $INGRESS_NAMESPACE 300
 
 # Get the new image names
-FRONTEND_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/deployment.yaml | awk '{print $2}')
+FRONTEND_IMAGE=$(grep 'image: sellinios/frontend:' /home/sellinios/aethra/microk8s/frontend-deployment.yaml | awk '{print $2}')
 BACKEND_IMAGE=$(grep 'image: sellinios/backend:' /home/sellinios/aethra/microk8s/backend-deployment.yaml | awk '{print $2}')
 
 # Force update the deployments to use the latest images

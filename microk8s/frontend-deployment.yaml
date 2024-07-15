@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: react-frontend
-        image: sellinios/frontend:20240714103137
+        image: sellinios/frontend:20240715082915
         ports:
         - containerPort: 80
         volumeMounts:

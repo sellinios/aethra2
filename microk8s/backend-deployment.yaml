@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: sellinios/backend:latest
+          image: sellinios/backend:20240715082915
           command: ["python"]
           args: ["manage.py", "migrate"]
           env:
@@ -29,7 +29,7 @@ spec:
               value: postgres
       containers:
         - name: backend
-          image: sellinios/backend:latest
+          image: sellinios/backend:20240715082915
           ports:
             - containerPort: 8000
           env:

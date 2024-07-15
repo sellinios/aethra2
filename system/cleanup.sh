@@ -4,15 +4,9 @@
 CONTAINER_IDS=$(sudo docker ps -aq)
 if [ -n "$CONTAINER_IDS" ]; then
   sudo docker stop $CONTAINER_IDS
-else
-  echo "No containers to stop"
-fi
-
-# Remove all containers
-if [ -n "$CONTAINER_IDS" ]; then
   sudo docker rm $CONTAINER_IDS
 else
-  echo "No containers to remove"
+  echo "No containers to stop and remove"
 fi
 
 # Remove all images

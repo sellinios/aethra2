@@ -38,7 +38,7 @@ spec:
         app: postgres
     spec:
       containers:
-        - image: postgres:13
+        - image: postgres:16
           name: postgres
           env:
             - name: POSTGRES_DB
