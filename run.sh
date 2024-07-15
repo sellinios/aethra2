@@ -27,4 +27,8 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+microk8s kubectl get all -n frontend
+microk8s kubectl get all -n backend
+microk8s kubectl get all -n ingress
+
 echo "Code pulled, built, and deployed successfully."

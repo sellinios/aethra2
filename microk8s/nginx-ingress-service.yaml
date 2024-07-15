@@ -4,13 +4,15 @@ metadata:
   name: nginx-ingress-microk8s-controller
   namespace: ingress
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: nginx-ingress-microk8s
   ports:
-    - port: 80
-      name: http
-      targetPort: 80
-    - port: 443
-      name: https
-      targetPort: 443
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  - name: https
+    port: 443
+    targetPort: 443
+    nodePort: 30443

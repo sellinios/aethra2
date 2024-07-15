@@ -62,13 +62,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Update deployment.yaml with the new image tags for frontend and backend
-sed -i "s|image: $FRONTEND_IMAGE_NAME:.*|image: $FRONTEND_FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/deployment.yaml
+# Update frontend-deployment.yaml and backend-deployment.yaml with the new image tags for frontend and backend
+sed -i "s|image: $FRONTEND_IMAGE_NAME:.*|image: $FRONTEND_FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/frontend-deployment.yaml
 sed -i "s|image: $BACKEND_IMAGE_NAME:.*|image: $BACKEND_FULL_IMAGE_NAME|g" /home/sellinios/aethra/microk8s/backend-deployment.yaml
 
 if [ $? -ne 0 ]; then
-  echo "Failed to update deployment.yaml. Exiting."
+  echo "Failed to update deployment files. Exiting."
   exit 1
 fi
 
-echo "Docker images pushed and deployment.yaml updated."
+echo "Docker images pushed and deployment files updated."
