@@ -22,4 +22,5 @@ spec:
   tls:
   - hosts:
     - kairos.gr
+    - www.kairos.gr
     secretName: kairos-tls
