@@ -15,31 +15,73 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: sellinios/backend:20240716220422
+          image: sellinios/backend:20240719192823
           command: ["python"]
           args: ["manage.py", "migrate"]
           env:
             - name: POSTGRES_DB
-              value: aethradb
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
-              value: sellinios
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: faidra123!@#
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
-              value: postgres
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: SECRET_KEY
       containers:
         - name: backend
-          image: sellinios/backend:20240716220422
+          image: sellinios/backend:20240719192823
           ports:
             - containerPort: 8000
           env:
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: DEBUG
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: ALLOWED_HOSTS
             - name: POSTGRES_DB
-              value: aethradb
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
-              value: sellinios
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: faidra123!@#
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
-              value: postgres
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: SECRET_KEY
       imagePullSecrets:
         - name: dockerhub-secret
