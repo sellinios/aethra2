@@ -38,15 +38,24 @@ spec:
         app: postgres
     spec:
       containers:
-        - image: postgres:16
+        - image: postgis/postgis:16-3.4
           name: postgres
           env:
             - name: POSTGRES_DB
-              value: aethradb
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
-              value: sellinios
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: faidra123!@#
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
           volumeMounts:

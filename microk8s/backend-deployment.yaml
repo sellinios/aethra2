@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: sellinios/backend:20240719192823
+          image: sellinios/backend:20240719194836
           command: ["python"]
           args: ["manage.py", "migrate"]
           env:
@@ -45,7 +45,7 @@ spec:
                   key: SECRET_KEY
       containers:
         - name: backend
-          image: sellinios/backend:20240719192823
+          image: sellinios/backend:20240719194836
           ports:
             - containerPort: 8000
           env:
