@@ -19,7 +19,7 @@ microk8s kubectl apply -f /home/sellinios/aethra/microk8s/backend-namespace.yaml
 # Apply ConfigMap and Secret for backend
 echo "Applying ConfigMap and Secret for backend..."
 microk8s kubectl apply -f /home/sellinios/aethra/microk8s/configmap.yaml
-microk8s kubectl apply -f /home/sellinios/aethra/microk8s/secret.yaml
+microk8s kubectl apply -f /home/sellinios/aethra/microk8s/database-secret.yaml
 
 if [ $? -ne 0 ]; then
   echo "Failed to apply ConfigMap or Secret. Exiting."
@@ -29,7 +29,6 @@ fi
 microk8s kubectl apply -f /home/sellinios/aethra/microk8s/backend-deployment.yaml
 microk8s kubectl apply -f /home/sellinios/aethra/microk8s/backend-service.yaml
 microk8s kubectl apply -f /home/sellinios/aethra/microk8s/postgres-deployment.yaml
-microk8s kubectl apply -f /home/sellinios/aethra/microk8s/database-secret.yaml
 
 if [ $? -ne 0 ]; then
   echo "Failed to apply backend Kubernetes configurations. Exiting."

@@ -17,7 +17,7 @@ def update_elevation_and_name(modeladmin, request, queryset):
             now = timezone.now()
             geocode_record, created = GeocodeResult.objects.get_or_create(geographic_place=place)
             needs_update = not geocode_record.geocode_last_updated or (
-                        now - geocode_record.geocode_last_updated).days > 30  # Update if older than 30 days
+                    now - geocode_record.geocode_last_updated).days > 30  # Update if older than 30 days
 
             if needs_update:
                 # Update logic without Google Maps
@@ -42,7 +42,8 @@ class GeographicPlaceAdmin(TranslatableAdmin):
     fieldsets = (
         (None, {
             'fields': (
-            'name', 'slug', 'longitude', 'latitude', 'elevation', 'confirmed', 'category', 'admin_division', 'location')
+                'name', 'slug', 'longitude', 'latitude', 'elevation', 'confirmed', 'category', 'admin_division',
+                'location')
         }),
     )
 

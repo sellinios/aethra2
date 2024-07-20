@@ -1,6 +1,7 @@
 from django.db import models
 from parler.models import TranslatableModel, TranslatedFields
 
+
 class GeographicCategory(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=255)
