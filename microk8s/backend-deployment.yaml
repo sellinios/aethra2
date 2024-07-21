@@ -13,89 +13,61 @@ spec:
       labels:
         app: backend
     spec:
-      initContainers:
-        - name: migrate
-          image: sellinios/backend:20240721101333
-          command: ["python"]
-          args: ["manage.py", "migrate"]
-          env:
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_DB
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_HOST
-              value: "postgres"
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: SECRET_KEY
       containers:
-        - name: backend
-          image: sellinios/backend:20240721101333
-          ports:
-            - containerPort: 8000
-          env:
-            - name: DEBUG
-              valueFrom:
-                configMapKeyRef:
-                  name: django-config
-                  key: DEBUG
-            - name: ALLOWED_HOSTS
-              valueFrom:
-                configMapKeyRef:
-                  name: django-config
-                  key: ALLOWED_HOSTS
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_DB
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_HOST
-              value: "postgres"
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: SECRET_KEY
-            - name: SECURE_PROXY_SSL_HEADER
-              value: "('HTTP_X_FORWARDED_PROTO', 'https')"
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 8000
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8000
-            initialDelaySeconds: 30
-            periodSeconds: 10
+      - name: backend
+        image: sellinios/backend:20240721105310
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: DEBUG
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: ALLOWED_HOSTS
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_HOST
+          value: "postgres"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: SECRET_KEY
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 5
       imagePullSecrets:
         - name: dockerhub-secret

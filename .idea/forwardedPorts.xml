@@ -2,69 +2,9 @@
 <project version="4">
   <component name="PortForwardingSettings">
     <ports>
-      <entry key="3000">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="3000" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="5432">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="5432" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
       <entry key="8000">
         <ForwardedPortInfo>
           <option name="hostPort" value="8000" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8001">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8001" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8080">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8080" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8081">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8081" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8089">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8089" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8090">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8090" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8091">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8091" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="8443">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="8443" />
-          <option name="readOnly" value="false" />
-        </ForwardedPortInfo>
-      </entry>
-      <entry key="10443">
-        <ForwardedPortInfo>
-          <option name="hostPort" value="10443" />
           <option name="readOnly" value="false" />
         </ForwardedPortInfo>
       </entry>

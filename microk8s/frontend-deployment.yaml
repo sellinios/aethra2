@@ -15,9 +15,12 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: sellinios/frontend:20240721101333
+        image: sellinios/frontend:20240721105310
         ports:
         - containerPort: 80
+        env:
+        - name: REACT_APP_BACKEND_URL
+          value: "https://backend-service.backend.svc.cluster.local:8000"
         volumeMounts:
         - mountPath: /etc/nginx/certs
           name: tls-certs

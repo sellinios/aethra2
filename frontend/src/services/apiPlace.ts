@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 export interface NearestPlace {
   id: number;
@@ -24,9 +24,11 @@ export interface NearestPlace {
 
 export const fetchNearestPlace = async (latitude: number, longitude: number): Promise<NearestPlace> => {
   try {
+    console.log(`Fetching nearest place from: ${BASE_URL}/places/nearest/`);
     const response = await axios.get<NearestPlace>(`${BASE_URL}/places/nearest/`, {
       params: { latitude, longitude }
     });
+    console.log('API response:', response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
