@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: sellinios/frontend:20240721105310
+        image: sellinios/frontend:20240721111336
         ports:
         - containerPort: 80
         env:
