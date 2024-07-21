@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from weather.models import GFSForecast
 
+
 class GFSForecastSerializer(serializers.ModelSerializer):
     precipitation = serializers.SerializerMethodField()
 

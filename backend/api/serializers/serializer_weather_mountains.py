@@ -2,6 +2,7 @@
 from rest_framework import serializers
 import math
 
+
 class GFSForecastMountainsSerializer(serializers.Serializer):
     date = serializers.DateField()
     hour = serializers.IntegerField()
@@ -17,7 +18,7 @@ class GFSForecastMountainsSerializer(serializers.Serializer):
         u = obj['forecast_data'].get('u-component_of_wind_level_10_heightAboveGround')
         v = obj['forecast_data'].get('v-component_of_wind_level_10_heightAboveGround')
         if u is not None and v is not None:
-            return math.sqrt(u**2 + v**2)
+            return math.sqrt(u ** 2 + v ** 2)
         return None
 
     def get_wind_direction(self, obj):

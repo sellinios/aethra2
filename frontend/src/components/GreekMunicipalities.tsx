@@ -24,13 +24,20 @@ const GreekMunicipalities: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const fetchMunicipalities = () => {
-        axios.get<Region[]>(`/api/geography/greece/municipalities/`)
+        const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/api/geography/greece/municipalities/`;
+        console.log(`Fetching municipalities from ${apiUrl}`);
+        axios.get<Region[]>(apiUrl)
             .then(response => {
                 setRegions(response.data);
             })
             .catch(error => {
                 setError(t('error_fetching_municipalities'));
                 console.error('There was an error fetching the municipalities!', error);
+                if (error.response) {
+                    console.error('Error data:', error.response.data);
+                    console.error('Error status:', error.response.status);
+                    console.error('Error headers:', error.response.headers);
+                }
             });
     };
 

@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Now you can use the environment variables
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,kairos.gr,www.kairos.gr').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -24,15 +24,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  # Ensure this is included
+    'parler',
+    'django.contrib.gis',
     'geography',
     'weather',
     'api',
     'users',
+    'corsheaders',  # Add this for handling CORS
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Add this for handling CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,13 +112,23 @@ REST_FRAMEWORK = {
     ),
 }
 
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "https://kairos.gr",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "https://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Settings specific to production environment
 if not DEBUG:
     # Security settings for production
     SECURE_HSTS_SECONDS = 3600
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True') == 'True'
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
@@ -125,3 +139,14 @@ if not DEBUG:
     if DATABASE_URL:
         import dj_database_url
         DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
+
+    # Trust the proxy headers
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+else:
+    # Disable HTTPS enforcement for local development
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_BROWSER_XSS_FILTER = False
+    X_FRAME_OPTIONS = 'SAMEORIGIN'

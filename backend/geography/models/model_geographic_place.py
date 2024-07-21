@@ -9,6 +9,7 @@ from unidecode import unidecode
 from .model_geographic_category import GeographicCategory
 from .model_geographic_division import GeographicDivision
 
+
 class GeographicPlace(TranslatableModel):
     id = models.AutoField(primary_key=True)
     translations = TranslatedFields(

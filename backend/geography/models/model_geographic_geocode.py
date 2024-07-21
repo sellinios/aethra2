@@ -2,6 +2,7 @@
 from django.db import models
 from .model_geographic_place import GeographicPlace
 
+
 class GeocodeResult(models.Model):
     geographic_place = models.OneToOneField(GeographicPlace, on_delete=models.CASCADE, related_name='geocode')
     geocode_result = models.JSONField(null=True, blank=True)

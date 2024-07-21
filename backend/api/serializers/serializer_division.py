@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from geography.models import GeographicDivision
 
+
 class GeographicDivisionSerializer(serializers.ModelSerializer):
     parent = serializers.SerializerMethodField()
 
@@ -12,6 +13,7 @@ class GeographicDivisionSerializer(serializers.ModelSerializer):
         if obj.parent:
             return GeographicDivisionSerializer(obj.parent).data
         return None
+
 
 class GreekMunicipalitySerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()

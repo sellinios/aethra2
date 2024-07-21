@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from geography.models import GeographicPlace, GeographicDivision
 
+
 class GeographicDivisionForUrlSerializer(serializers.ModelSerializer):
     parent = serializers.SerializerMethodField()
 
@@ -12,6 +13,7 @@ class GeographicDivisionForUrlSerializer(serializers.ModelSerializer):
         if obj.parent:
             return GeographicDivisionForUrlSerializer(obj.parent).data
         return None
+
 
 class GeographicPlaceWithUrlSerializer(serializers.ModelSerializer):
     admin_division = GeographicDivisionForUrlSerializer()

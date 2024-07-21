@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: sellinios/backend:20240720131903
+          image: sellinios/backend:20240721101333
           command: ["python"]
           args: ["manage.py", "migrate"]
           env:
@@ -45,7 +45,7 @@ spec:
                   key: SECRET_KEY
       containers:
         - name: backend
-          image: sellinios/backend:20240720131903
+          image: sellinios/backend:20240721101333
           ports:
             - containerPort: 8000
           env:
@@ -83,5 +83,19 @@ spec:
                 secretKeyRef:
                   name: django-secret
                   key: SECRET_KEY
+            - name: SECURE_PROXY_SSL_HEADER
+              value: "('HTTP_X_FORWARDED_PROTO', 'https')"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
       imagePullSecrets:
         - name: dockerhub-secret

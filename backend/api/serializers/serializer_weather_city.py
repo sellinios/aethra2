@@ -2,6 +2,7 @@ from rest_framework import serializers
 from weather.models import GFSForecast
 import math
 
+
 class GFSForecastCitySerializer(serializers.ModelSerializer):
     temperature_celsius = serializers.SerializerMethodField()
     wind_speed = serializers.SerializerMethodField()
@@ -21,7 +22,7 @@ class GFSForecastCitySerializer(serializers.ModelSerializer):
         u = obj.forecast_data.get("u-component_of_wind_level_10_heightAboveGround")
         v = obj.forecast_data.get("v-component_of_wind_level_10_heightAboveGround")
         if u is not None and v is not None:
-            return round(math.sqrt(u**2 + v**2), 2)
+            return round(math.sqrt(u ** 2 + v ** 2), 2)
         return None
 
     def get_wind_direction(self, obj):
