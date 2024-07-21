@@ -57,17 +57,19 @@ spec:
           httpGet:
             path: /healthz
             port: 8000
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          periodSeconds: 10
+            scheme: HTTP
+          initialDelaySeconds: 120
+          timeoutSeconds: 10
+          periodSeconds: 30
           failureThreshold: 5
         readinessProbe:
           httpGet:
             path: /healthz
             port: 8000
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          periodSeconds: 10
+            scheme: HTTP
+          initialDelaySeconds: 120
+          timeoutSeconds: 10
+          periodSeconds: 30
           failureThreshold: 5
       imagePullSecrets:
         - name: dockerhub-secret
