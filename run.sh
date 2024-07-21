@@ -27,8 +27,23 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Run the cleanup script with sudo
+sudo /home/sellinios/aethra/system/cleanup.sh
+if [ $? -ne 0 ]; then
+  echo "Cleanup script failed. Exiting."
+  exit 1
+fi
+
+# Get all resources in the frontend namespace
+echo "Resources in frontend namespace:"
 microk8s kubectl get all -n frontend
+
+# Get all resources in the backend namespace
+echo "Resources in backend namespace:"
 microk8s kubectl get all -n backend
+
+# Get all resources in the ingress namespace
+echo "Resources in ingress namespace:"
 microk8s kubectl get all -n ingress
 
-echo "Code pulled, built, and deployed successfully."
+echo "Code pulled, built, deployed, and old ReplicaSets cleaned up successfully."
