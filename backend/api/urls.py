@@ -5,7 +5,7 @@ from api.views.view_urls_places import all_places_with_urls
 from api.views.view_weather_city import weather_for_city
 from api.views.view_gfs_forecast import gfs_data
 from api.views.view_division import greek_municipalities
-from api.views.view_contact_message import contact_message_create  # Import the new view
+from api.views.view_contact_message import contact_message_create
 
 urlpatterns = [
     path('<str:lang_code>/nearest-place/', nearest_place, name='nearest_place'),
@@ -14,5 +14,5 @@ urlpatterns = [
     path('<str:lang_code>/weather/cities/', weather_for_city, name='weather_for_city'),
     path('weather-data/', gfs_data, name='gfs_data'),
     path('geography/greece/municipalities/', greek_municipalities, name='greek_municipalities'),
-    path('contact/', contact_message_create, name='contact_message_create'),  # Add this line
+    path('contact/', contact_message_create, name='contact_message_create'),
 ]
